@@ -33,16 +33,194 @@ En el proyecto de Unity aportado por el profesor, contamos con una escena que di
 
 Para definir los comportamientos que se piden en el enunciado, disponemos de una serie de scripts con las siguientes características:
 
--El script Agente: cuenta con una serie de variables públicas que le permiten gestionar y combinar los diferentes comportamientos según diferentes razones, como la prioridad y el peso. Además, este también lleva el movimiento tanto de objetos físicos, como de no físicos. Las tres esferas de la escena contienen este script.
-
--El script ComportamientoAgente: se trata de una clase abstracta de la cual heredarán todos los comportamientos que se les vayan a asociar a los agentes. Estas tienen un peso y una prioridad, que entran en juego con el script anterior, el cual gestionará que comportamientos deberán realizarse. Para el caso en el que el comportamiento esté relacionado con otro objeto, permite guardarse un gameObject objetivo.
-
--El script ControlJugador: hereda de ComportamientoAgente y permite al objeto que lo lleve ser controlado por el jugador mediante las flechas o WASD.
-
--El script Huir: hereda de ComportamientoAgente, se mueve en dirección contraria a el objetivo asignado.
-
--El script Seguir: hereda de ComportamientoAgente, se mueve en dirección del objetivo asignado.
+    -El script Agente: cuenta con una serie de variables públicas que le permiten gestionar y combinar los diferentes comportamientos según diferentes razones, como la prioridad y el peso. Además, este también lleva el movimiento tanto de objetos físicos, como de no físicos. Las tres esferas de la escena contienen este script.
+    -El script ComportamientoAgente: se trata de una clase abstracta de la cual heredarán todos los comportamientos que se les vayan a asociar a los agentes. Estas tienen un peso y una prioridad, que entran en juego con el script anterior, el cual gestionará que comportamientos deberán realizarse. Para el caso en el que el comportamiento esté relacionado con otro objeto, permite guardarse un gameObject objetivo.
+    -El script ControlJugador: hereda de ComportamientoAgente y permite al objeto que lo lleve ser controlado por el jugador mediante las flechas o WASD.
+    -El script Huir: hereda de ComportamientoAgente, se mueve en dirección contraria a el objetivo asignado.
+    -El script Seguir: hereda de ComportamientoAgente, se mueve en dirección del objetivo asignado.
 
 La esfera amarilla representa al jugador(Flautista de Hamelin), ya que posee el componente que permite a este controlarlo.
 
 La esfera azul y la roja no representan ni al perro, ni a las ratas, si no que poseen la roja el comportamiento huir, huyendo del jugador, y la azul el comportamiento seguir, que hace que se mueva hacia el jugador.
+
+**COMPORTAMIENTOS A AÑADIR**
+
+-Merodeo de ratas=Wander
+
+class Kinematiclander:
+    character: Static
+    maxSpeed: float
+
+    # The maximum rotation speed we'd like, probably should be smaller
+    # than the maximum possible, for a leisurely change in direction.
+
+    maxRotation: float
+
+    function getSteering() -> KinematicSteering0utput:
+        result = new KinematicSteering0utput()
+
+        # Get velocity from the vector form of the orientation.
+        result .velocity = maxSpeed * character .orientation.asVector()
+	
+        # Change our orientation randomly.
+        result.rotation = randomBinomial() * maxRotation
+
+        return result
+
+-Seguimiento y formación de las ratas=Formations
+
+class FormationManager: 
+    # The assignment characters to slots. 
+    class SlotAssignment: 
+        character: Character 
+        slotNumber: int 
+        slotAssignments: SlotAssignment[] 
+
+        # A Static (i.e., position and orientation) representing the 
+        # drift offset for the currently filled slots. 
+        driftOffset: Static 
+
+        # The formation pattern. 
+        pattern: FormationPattern 
+
+        # Update the assignment of characters to slots. 
+        function updateSlotAssignments(): 
+            # A trivial assignment algorithm: we simply go through 
+            # each character and assign sequential slot numbers. 
+            for i in 0..slotAssignments.length(): 
+                slotAssignments[i].slotNumber = i 
+
+            # Update the drift offset. 
+            driftOffset = pattern.getDriftOffset(slotAssignments) 
+
+        # Add a new character. Return false if no slots are available. 
+        function addCharacter(character: Character) -> bool: 
+
+            # Check if the pattern supports more slots.
+            occupiedSlots = slotAssignnents. length( )
+            if pattern. supportsSlots(occupiedSlots + 1.
+                # Add a new slot assignment.
+                slotAssignment = new SlotAssignment( )
+                slotAssignnent.character = character
+                slotAssignnents.append( slotAssignnent)
+                updateSlotAssignments( )
+                return true
+            else:
+                # Otherwise we've failed to add the character.
+                return false
+
+ 
+
+ 
+
+        # Remove a character from its slot.
+        function renoveCharacter (character: Character):
+            slot = charactersInSlots. findIndexOfCharacter character)
+            slotAssignnents.renovest( slot)
+            updateSlotAssignments( )
+
+        # Send new target Locations to each character.
+        function updateStots( ):
+
+            # Find the anchor point.
+            anchor: Static = getAnchorPoint( )
+            orientationMatrix: Matrix = anchor.orientation.asMatrix()
+
+            # Go through each character in turn.
+            for 1 in 0..slotAssignnents. Length ):
+                slotNumber: int = slotAssignnents[i].slotNumber
+                slot: Static = pattern.getSlotLocation( slotNumber)
+
+            # Transform by the anchor point position and orientation
+            location = new Static()
+            location. position = anchor.position +
+            orientationMatrix * slot.position
+            location.orientation = anchor.orientation +
+            slot.orientation
+
+            # And add the drift component.
+            location. position -= driftoffset.position
+            location.orientation -= driftoffset.orientation
+
+            # Send the static to the character.
+            slotAssignments[i] .character.setTarget( location)
+
+        # The characteristic point of this formation (see below).
+        function aetAnchorPoint() -> Static
+
+
+-Algoritmo de control de la llegada para perro y ratas=Arrive
+
+class Arrive:
+    character: Kinematic
+    target: Kinematic
+
+    maxAcceleration: float
+    maxSpeed: float
+
+    # The radius for arriving at the target.
+    targetRadius: float
+
+    # The radius for beginning to slow down.
+    slowRadius: float
+
+    # The time over which to achieve target speed.
+    timeToTarget: float = 0.1
+
+    function getSteering() -> Steering0utput:
+    result = new Steering0utput()
+
+    # Get the direction to the target.
+    direction = target.position - character.position
+    distance = direction.length()
+
+    # Check if we are there, return no steering.
+    if distance < targetRadius:
+    return null
+
+    # If we are outside the slowRadius, then move at max speed.
+    if distance > slowRadius:
+        targetSpeed = maxSpeed
+    # Otherwise calculate a scaled speed.
+    else:
+        targetSpeed = maxSpeed * distance / slowRadius
+
+    # The target velocity combines speed and direction.
+    targetVelocity = direction
+    targetVelocity.normalize( )
+    targetVelocity *= targetSpeed
+
+    # Acceleration tries to get to the target velocity.
+    result.linear = targetVelocity - character.velocity
+    result.linear /= timeToTarget
+
+    # Check if the acceleration is too fast.
+
+    if result.linear.length() > maxAcceleration:
+        result.linear.normalize()
+        result.linear *= maxAcceleration
+
+    result.angular = 0
+    return result
+
+
+
+-Percepción perro sobre las ratas=Rule-Based System
+
+function ruleBasedIteration(database: DataNode, rules: Rule[]): 
+    # Check each rule in turn. 
+    for rule in rules: 
+        # Create the empty set of bindings. 
+        bindings = [] 
+
+    # Check for triggering. 
+    if rule.ifClause.matches(database, bindings): 
+        # Fire the rule. 
+        rule.getActions(bindings) 
+
+        # And exit: we’re done for this iteration. 
+        break 
+
+    # If we get here, we’ve had no match, we could use a fallback 16 # action, or simply do nothing. 
+
+-Tocar la flauta
