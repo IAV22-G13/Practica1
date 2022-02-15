@@ -50,18 +50,21 @@ namespace UCM.IAV.Movimiento
             time += Time.deltaTime;
             Direccion dir = new Direccion();
 
-            dir.lineal = maxSpeed * new Vector3(-Mathf.Cos(_tr.rotation.y), 0, Mathf.Sin(_tr.rotation.y));
-            Debug.Log(dir.lineal);
+            _tr.rotation.ToAngleAxis(out float x, out Vector3 y);
+            float degrees = x * y.y;
+            agente.velocidad = maxSpeed * agente.OriToVec(degrees);
 
             if (time > changeTime)
             {
                 time = 0;
                 changeTime = Random.Range(minCambGiro, maxCambGiro);
-                r = Random.Range(-1.0f, 1.0f);
+                r = Random.Range(-1, 2);
             }
-
-            if (time < tiempoGiro)
-                dir.angular = maxRotation * r * Time.deltaTime;
+            if(time < tiempoGiro)
+            {
+                float rot = Random.Range(0.0f, maxRotation);
+                agente.rotacion = rot * r;
+            }
 
             return dir;
         }

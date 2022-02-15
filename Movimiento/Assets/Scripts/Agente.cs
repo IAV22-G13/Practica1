@@ -114,10 +114,11 @@ namespace UCM.IAV.Movimiento {
 
             // Limitamos la aceleración al máximo que acepta este agente (aunque normalmente vendrá ya limitada)
             if (direccion.lineal.sqrMagnitude > aceleracionMax)
-                direccion.lineal = direccion.lineal.normalized * aceleracionMax; 
+                direccion.lineal = direccion.lineal.normalized * aceleracionMax;
 
             // La opción por defecto sería usar ForceMode.Force, pero eso implicaría que el comportamiento de dirección tuviese en cuenta la masa a la hora de calcular la aceleración que se pide
             cuerpoRigido.AddForce(direccion.lineal, ForceMode.Acceleration);
+            //cuerpoRigido.velocity = direccion.lineal;
 
             // Limitamos la aceleración angular al máximo que acepta este agente (aunque normalmente vendrá ya limitada)
             if (direccion.angular > aceleracionAngularMax)
@@ -159,7 +160,7 @@ namespace UCM.IAV.Movimiento {
         /// </summary>
         public virtual void Update()
         {
-            if (cuerpoRigido != null)
+            if (!cuerpoRigido.isKinematic)
                 return; // El movimiento será dinámico, controlado por la física y FixedUpdate
 
             // Limito la velocidad lineal antes de empezar
