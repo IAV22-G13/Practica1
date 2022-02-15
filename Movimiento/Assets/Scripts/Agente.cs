@@ -109,9 +109,15 @@ namespace UCM.IAV.Movimiento {
         /// </summary>
         public virtual void FixedUpdate()
         {
+
             if (cuerpoRigido.isKinematic)
                 return; // El movimiento será cinemático, fotograma a fotograma con Update
 
+            if (combinarPorPrioridad)
+            {
+                direccion = GetPrioridadDireccion();
+                grupos.Clear();
+            }
             // Limitamos la aceleración al máximo que acepta este agente (aunque normalmente vendrá ya limitada)
             if (direccion.lineal.sqrMagnitude > aceleracionMax)
                 direccion.lineal = direccion.lineal.normalized * aceleracionMax;
@@ -193,16 +199,15 @@ namespace UCM.IAV.Movimiento {
         /// </summary>
         public virtual void LateUpdate()
         {
+            if (!cuerpoRigido.isKinematic) {
+                return; // El movimiento será dinámico, controlado por la física y FixedUpdate
+            }
+
             if (combinarPorPrioridad)
             {
                 direccion = GetPrioridadDireccion();
                 grupos.Clear();
             }
-
-            if (!cuerpoRigido.isKinematic) {
-                return; // El movimiento será dinámico, controlado por la física y FixedUpdate
-            }
-
             // Limitamos la aceleración al máximo que acepta este agente (aunque normalmente vendrá ya limitada)
             if (direccion.lineal.sqrMagnitude > aceleracionMax)
                 direccion.lineal = direccion.lineal.normalized * aceleracionMax;

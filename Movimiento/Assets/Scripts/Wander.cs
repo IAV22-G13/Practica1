@@ -28,7 +28,7 @@ namespace UCM.IAV.Movimiento
     {
         private Transform _tr;  //Transform de la rata
 
-        [SerializeField]        //Valores máximos de velocidad y rotacion
+        [SerializeField]        //Valores mï¿½ximos de velocidad y rotacion
         float maxSpeed, maxRotation;
 
         private float r;
@@ -52,7 +52,7 @@ namespace UCM.IAV.Movimiento
 
             _tr.rotation.ToAngleAxis(out float x, out Vector3 y);
             float degrees = x * y.y;
-            agente.velocidad = maxSpeed * agente.OriToVec(degrees);
+            dir.lineal = maxSpeed * agente.OriToVec(degrees);
 
             if (time > changeTime)
             {
@@ -60,13 +60,23 @@ namespace UCM.IAV.Movimiento
                 changeTime = Random.Range(minCambGiro, maxCambGiro);
                 r = Random.Range(-1, 2);
             }
-            if(time < tiempoGiro)
+            if (time < tiempoGiro)
             {
                 float rot = Random.Range(0.0f, maxRotation);
-                agente.rotacion = rot * r;
+                dir.angular = rot * r;
             }
 
             return dir;
+        }
+
+        public void OnTriggerEnter(Collider collision)
+        {
+            if (!collision.GetComponent<Rigidbody>())
+            {
+                time = changeTime;
+                agente.velocidad *= -1;
+                agente.rotacion += 180;
+            }
         }
     }
 }
