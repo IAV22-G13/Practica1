@@ -6,13 +6,20 @@ namespace UCM.IAV.Movimiento
 {
 
     public class Arrive : ComportamientoAgente
-    {
+    {   
+        [SerializeField]
         float maxAcceleration;
+
+        [SerializeField]
         float maxSpeed;
 
+        [SerializeField]
         float targetRadius;
+
+        [SerializeField]
         float slowRadius;
 
+        [SerializeField]
         float timeToTarget = 0.1f;
 
         public override Direccion GetDireccion()
@@ -23,7 +30,7 @@ namespace UCM.IAV.Movimiento
             Vector3 direction = objetivo.transform.position - this.transform.position;
             float distance = direction.magnitude;
 
-            if (distance > targetRadius)
+            if (distance < targetRadius)
                 return new Direccion();
 
             float targetSpeed;
@@ -41,7 +48,7 @@ namespace UCM.IAV.Movimiento
             targetVelocity.Normalize();
             targetVelocity *= targetSpeed;
 
-            result.lineal = targetVelocity /*- character.velocity*/;
+            result.lineal = targetVelocity - agente.gameObject.GetComponent<Rigidbody>().velocity;
             result.lineal /= timeToTarget;
 
             if (result.lineal.magnitude > maxAcceleration)
