@@ -133,11 +133,14 @@ GameObject:
   m_Component:
   - component: {fileID: 78873673}
   - component: {fileID: 78873672}
+  - component: {fileID: 78873680}
+  - component: {fileID: 78873679}
   - component: {fileID: 78873671}
   - component: {fileID: 78873677}
   - component: {fileID: 78873676}
   - component: {fileID: 78873675}
   - component: {fileID: 78873674}
+  - component: {fileID: 78873678}
   m_Layer: 0
   m_Name: Enemigo
   m_TagString: Untagged
@@ -152,7 +155,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 78873670}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04975c86d88a65349a8c27aebc417ff7, type: 3}
   m_Name: 
@@ -175,8 +178,8 @@ MonoBehaviour:
   combinarPorPeso: 0
   combinarPorPrioridad: 0
   umbralPrioridad: 0.2
-  velocidadMax: 15
-  rotacionMax: 5
+  velocidadMax: 3
+  rotacionMax: 80
   aceleracionMax: 8
   aceleracionAngularMax: 5
   velocidad: {x: 0, y: 0, z: 0}
@@ -274,6 +277,54 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 78873670}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!135 &78873678
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78873670}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 4
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &78873679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78873670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b5c0b23a8cedb344905eb197e8658da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peso: 1
+  prioridad: 1
+  objetivo: {fileID: 1021455439}
+  maxAcceleration: 10
+  maxSpeed: 10
+  targetRadius: 2
+  slowRadius: 6
+  timeToTarget: 0.1
+--- !u!114 &78873680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78873670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d820259ff3eb69347957aa6852a8c54c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peso: 1
+  prioridad: 2
+  objetivo: {fileID: 0}
 --- !u!1 &412609105
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,13 +430,12 @@ GameObject:
   m_Component:
   - component: {fileID: 635709776}
   - component: {fileID: 635709775}
-  - component: {fileID: 635709782}
   - component: {fileID: 635709780}
   - component: {fileID: 635709779}
   - component: {fileID: 635709778}
   - component: {fileID: 635709777}
-  - component: {fileID: 635709781}
   - component: {fileID: 635709774}
+  - component: {fileID: 635709781}
   m_Layer: 0
   m_Name: Rata
   m_TagString: Untagged
@@ -393,19 +443,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!135 &635709774
-SphereCollider:
+--- !u!114 &635709774
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 635709773}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b5c0b23a8cedb344905eb197e8658da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peso: 1
+  prioridad: 1
+  objetivo: {fileID: 1021455439}
+  maxAcceleration: 10
+  maxSpeed: 10
+  targetRadius: 2
+  slowRadius: 6
+  timeToTarget: 0.1
 --- !u!114 &635709775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -535,31 +592,11 @@ MonoBehaviour:
   peso: 1
   prioridad: 1
   objetivo: {fileID: 0}
-  maxSpeed: 2.85
-  maxRotation: 20
+  maxSpeed: 3
+  maxRotation: 80
   minCambGiro: 1
   maxCambGiro: 3
-  tiempoGiro: 2
---- !u!114 &635709782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 635709773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5c0b23a8cedb344905eb197e8658da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  peso: 2
-  prioridad: 1
-  objetivo: {fileID: 1021455439}
-  maxAcceleration: 5
-  maxSpeed: 3
-  targetRadius: 2
-  slowRadius: 6
-  timeToTarget: 0.1
+  tiempoGiro: 0.2
 --- !u!1 &687511467
 GameObject:
   m_ObjectHideFlags: 0

@@ -109,7 +109,7 @@ namespace UCM.IAV.Movimiento {
         /// </summary>
         public virtual void FixedUpdate()
         {
-            if (cuerpoRigido == null)
+            if (cuerpoRigido.isKinematic)
                 return; // El movimiento será cinemático, fotograma a fotograma con Update
 
             // Limitamos la aceleración al máximo que acepta este agente (aunque normalmente vendrá ya limitada)
@@ -199,7 +199,7 @@ namespace UCM.IAV.Movimiento {
                 grupos.Clear();
             }
 
-            if (cuerpoRigido != null) {
+            if (!cuerpoRigido.isKinematic) {
                 return; // El movimiento será dinámico, controlado por la física y FixedUpdate
             }
 

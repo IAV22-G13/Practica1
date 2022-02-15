@@ -6,7 +6,7 @@ namespace UCM.IAV.Movimiento
 {
     public class Percepcion : ComportamientoAgente
     {
-        List<GameObject> ratas;
+        List<GameObject> ratas = new List<GameObject>();
 
         private void OnTriggerEnter(Collider other)
         {
@@ -38,7 +38,7 @@ namespace UCM.IAV.Movimiento
 
             direction.Normalize();
             Direccion dir = new Direccion();
-            dir.lineal = direction;
+            dir.lineal = direction * agente.velocidadMax;
             return dir;
 
         }
