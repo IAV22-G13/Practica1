@@ -31,7 +31,7 @@ namespace UCM.IAV.Movimiento
         [SerializeField]        //Valores máximos de velocidad y rotacion
         float maxSpeed, maxRotation;
 
-        private int r;
+        private float r;
         private float time, changeTime;
         [SerializeField]
         float minCambGiro, maxCambGiro, tiempoGiro;
@@ -41,6 +41,7 @@ namespace UCM.IAV.Movimiento
         {
             _tr = this.transform;
             changeTime = Random.Range(minCambGiro, maxCambGiro);
+            r = Random.Range(-1.0f, 1.0f);
             time = 0;
         }
 
@@ -48,17 +49,19 @@ namespace UCM.IAV.Movimiento
         {
             time += Time.deltaTime;
             Direccion dir = new Direccion();
-            
+
             dir.lineal = maxSpeed * new Vector3(-Mathf.Cos(_tr.rotation.y), 0, Mathf.Sin(_tr.rotation.y));
+            Debug.Log(dir.lineal);
 
             if (time > changeTime)
             {
                 time = 0;
                 changeTime = Random.Range(minCambGiro, maxCambGiro);
-                r = Random.Range(-1, 2);
+                r = Random.Range(-1.0f, 1.0f);
             }
-            if(time<tiempoGiro)
-                dir.angular = maxRotation * r;
+
+            if (time < tiempoGiro)
+                dir.angular = maxRotation * r * Time.deltaTime;
 
             return dir;
         }
