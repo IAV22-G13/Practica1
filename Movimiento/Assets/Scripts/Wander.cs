@@ -73,7 +73,7 @@ namespace UCM.IAV.Movimiento
         {
             if (!collision.GetComponent<Rigidbody>())
             {
-                time = changeTime;
+                //time = changeTime;
                 agente.velocidad *= -1;
                 agente.rotacion += 180;
             }

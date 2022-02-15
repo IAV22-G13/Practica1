@@ -11,10 +11,18 @@ namespace UCM.IAV.Movimiento
         public float orientation;
     }
 
-    struct ratSlot
+    class ratSlot
     {
+        public ratSlot(GameObject o, int s) { character = o; slot = s; }
         public GameObject character;
         public int slot;
+
+        public void setSlot(int x) { slot = x; }
+    }
+
+    struct slot
+    {
+
     }
 
     struct pattern
@@ -22,65 +30,49 @@ namespace UCM.IAV.Movimiento
         public int supportedSlots;
     }
 
-    public class Formation : ComportamientoAgente
+    public class Formation
     {
 
         static PosOri driftOffset;
 
-        ratSlot[] slotAssignment = new ratSlot[0];
+        List<ratSlot> slotAssignments = new List<ratSlot>();
 
         pattern exPattern;
-
+        [SerializeField]
+        Transform anchorPoint;
         void updateSlotAssignment()
         {
-            for (int i = 0; i < slotAssignment.Length; i++)
+            for (int i = 0; i < slotAssignments.Count; i++)
             {
-                slotAssignment[i].slot = i;
+                slotAssignments[i].setSlot(i);
             }
 
-            //driftOffset = pattern.getDriftOffset(slotAssignments)
+            driftOffset = pattern.getDriftOffset(slotAssignments);
         }
 
         bool addCharacter(GameObject character)
         {
-            int occupiedSlots = slotAssignment.Length;
-
-            if (exPattern.supportedSlots < occupiedSlots + 1)
+            if (exPattern.supportedSlots < slotAssignments.Count + 1)
                 return false;
 
-            ratSlot addSlot = new ratSlot();
-            addSlot.character = character;
+            ratSlot addSlot = new ratSlot(character, 0);
 
-            ratSlot[] aux = slotAssignment;
-
-            slotAssignment = new ratSlot[occupiedSlots + 1];
-
-            int i = 0;
-            for (i = 0; i < aux.Length; i++)
-            {
-                slotAssignment[i] = aux[i];
-            }
-            slotAssignment[i] = addSlot;
-
+            slotAssignments.Add(addSlot);
+          
             updateSlotAssignment();
             return true;
         }
 
         void removeCharacter(GameObject character)
-        {
-            int occupiedSlots = slotAssignment.Length;
-
-            ratSlot[] aux = slotAssignment;
-
-            slotAssignment = new ratSlot[occupiedSlots - 1];
-            int found = 0;
-            for (int i = 0; i < aux.Length; i++)
+        {     
+            int i = 0;
+            while(i < slotAssignments.Count)
             {
-                if (character != slotAssignment[i].character)
+                if (character == slotAssignments[i].character)
                 {
-                    slotAssignment[i - found] = aux[i];
+                    slotAssignments.RemoveAt(i);
+                    break;
                 }
-                else found = 1;
             }
 
             updateSlotAssignment();
@@ -88,83 +80,28 @@ namespace UCM.IAV.Movimiento
 
         void updateSlots()
         {
-            
+            Vector3 ancPoint = anchorPoint.position;
+            Vector3 ori = anchorPoint.rotation.eulerAngles;
+
+            for(int i=0; i< slotAssignments.Count; i++)
+            {
+                int slotNumber = slotAssignments[i].slot;
+                slot formSlot = pattern.getSlotLocation(slotNumber);
+
+                PosOri location;
+                location.position = ancPoint + ori * formSlot.position;
+                location.orientation = ori + formSlot.orientation;
+
+                location.position -= driftOffset.position;
+                location.orientation -= driftOffset.orientation;
+
+                slotAssignments[i].character.setTarget(location);
+            }
         }
-        public override Direccion GetDireccion()
+
+        Vector3 getAnchorPoint()
         {
-            //# A Static (i.e., position and orientation) representing the 
-            //# drift offset for the currently filled slots. 
-            //        driftOffset: Static
-
-            //# The formation pattern. 
-            //    pattern: FormationPattern
-
-            //# Update the assignment of characters to slots. 
-            //    function updateSlotAssignments(): 
-            //        # A trivial assignment algorithm: we simply go through 
-            //        # each character and assign sequential slot numbers. 
-            //        for i in 0..slotAssignments.length(): 
-            //            
-
-            //        # Update the drift offset. 
-            //        driftOffset = pattern.getDriftOffset(slotAssignments)
-
-            //    # Add a new character. Return false if no slots are available. 
-            //    function addCharacter(character: Character)-> bool: 
-
-            //        # Check if the pattern supports more slots.
-            //        occupiedSlots = slotAssignnents.length()
-            //        if pattern.supportsSlots(occupiedSlots + 1.
-            //# Add a new slot assignment.
-            //            slotAssignment = new SlotAssignment()
-            //            slotAssignnent.character = character
-            //            slotAssignnents.append(slotAssignnent)
-            //            updateSlotAssignments()
-            //            return true
-            //        else:
-            //            # Otherwise we've failed to add the character.
-            //            return false
-
-
-
-
-
-            //    # Remove a character from its slot.
-            //            function renoveCharacter(character: Character):
-            //        slot = charactersInSlots.findIndexOfCharacter character)
-            //        slotAssignnents.renovest(slot)
-            //        updateSlotAssignments()
-
-            //    # Send new target Locations to each character.
-            //            function updateStots():
-
-            //        # Find the anchor point.
-            //        anchor: Static = getAnchorPoint()
-            //        orientationMatrix: Matrix = anchor.orientation.asMatrix()
-
-            //        # Go through each character in turn.
-            //            for 1 in 0..slotAssignnents.Length ):
-            //            slotNumber: int = slotAssignnents[i].slotNumber
-            //            slot: Static = pattern.getSlotLocation(slotNumber)
-
-            //        # Transform by the anchor point position and orientation
-            //            location = new Static()
-            //        location.position = anchor.position +
-            //        orientationMatrix * slot.position
-            //        location.orientation = anchor.orientation +
-            //        slot.orientation
-
-            //        # And add the drift component.
-            //            location.position -= driftoffset.position
-            //        location.orientation -= driftoffset.orientation
-
-            //        # Send the static to the character.
-            //            slotAssignments[i].character.setTarget(location)
-
-            //    # The characteristic point of this formation (see below).
-            //            function aetAnchorPoint() -> Static
-
-            return new Direccion();
+            return anchorPoint.position;
         }
     }
 }
