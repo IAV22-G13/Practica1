@@ -224,3 +224,77 @@ function ruleBasedIteration(database: DataNode, rules: Rule[]):
     # If we get here, we’ve had no match, we could use a fallback 16 # action, or simply do nothing. 
 
 -Tocar la flauta
+
+**IMPLEMENTACION FINAL**
+
+-Comportamiento del Perro
+
+Para el comportamiento del perro utilizamos los scripts arrive y percepción.
+
+Arrive, para acercarse al jugador, bajar su velocidad cuando esta cerca y detenerse a cierta distancia, tal y como lo explicamos en el apartado anterior.
+
+Percepción: hace que el perro mantenga la distancia con las ratas, alejandose de ellas cuando están cerca. Tiene todas las ratas en consideración, en caso de que haya mucahs se aleja
+proporcionalmente a la distancia y número de ratas que se encuentran en una dirección. Este comportamiento se ejecuta con mayor prioridad que el arrive.
+
+No utilizamos el pseudocódigo pensado inicialmente, si no que desarrollamos nosotros uno, que se basa en el de huida, pero teniendo en cuenta a multiples ratas a través de un trigger.
+
+-Comportamiento de la rata
+
+Para el comportamiento de la rata utilizamos los scripts Wander, Separation y Arrive
+
+Arrive, tal y como con el perro, este comportamiento es para que se mueva hacia el jugador de la manera explicada anteriormente.
+
+Wander: utilizamos el código propuesto, hace que las ratas den vueltas por el escenario.
+
+Separation: lo utilizmos para que las ratas mantengas una pequeña distancia entre ellas, de esta manera se ordenan al perseguir al jugador.
+El pseudocódigo de este comportamiento no estaba propuesto anteriormente, por ello lo insertamos más adelante.
+
+    aracter: Kinematic
+    maxAcceleration: float
+
+    # A List of potential targets.
+    targets: Kinematicl]
+
+    # The threshold to take action.
+    threshold: float
+
+    # The constant coefficient of decay for the inverse square law.
+    decayCoefficient: float
+
+    function getSteering() -> SteeringQutput:
+    result = new SteeringOutput( )
+
+    # Loop through each target.
+
+    for target in targets:
+    # Check if the target is close.
+    direction = target.position - character.position
+    distance = direction.length( )
+
+    if distance < threshold:
+    # Calculate the strength of repulsion
+    # (here using the inverse square law).
+    strength = min(
+    decayCoefficient / (distance * distance),
+    maxAcceleration)
+
+    # Add the acceleration.
+    direction.normalize( )
+
+    result.linear += strength * direction
+
+    return result
+
+Para la realización de estos comportamientos hemos utilizado un script auxiliar, el ratControl,
+este activa los comportamientos Arrive y Separation, y desactiva el Wander cuando el jugador esta tocando la flauta, y viceversa si 
+no esta tocando la flauta.
+
+Entre el Arrive y el Separation que se ejecutan de manera simultanea, el Separation tiene mayor prioridad que el Arrive 
+
+Comportamiento del jugador:
+
+Para tocar la flauta, mas alla de añadir un comportamiento, hemos modificado el ControlJugador para que al pulsar el espacio 
+este toque la flauta. La aplicación del sonido lo hemos realizado con la ayuda del componente AudioSource.
+
+A parte de todo esto hemos añadido un GameManager que permite reiniciar el juego pulsando la tecla R, y eliminar todas las ratas a excepción de una, en el caso de que esto ayude
+a la observación de su comportamiento.
