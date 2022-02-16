@@ -22,8 +22,18 @@ namespace UCM.IAV.Movimiento
         /// Obtiene la dirección
         /// </summary>
         /// <returns></returns>
+
         public override Direccion GetDireccion()
         {
+            if (Input.GetKeyDown("space"))
+            {
+                //suena musica
+            }
+            if (Input.GetKeyUp("space"))
+            {
+                //suena musica
+            }
+
             Direccion direccion = new Direccion();
             direccion.lineal.x = Input.GetAxis("Horizontal");
             direccion.lineal.z = Input.GetAxis("Vertical");
