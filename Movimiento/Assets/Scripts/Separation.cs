@@ -48,6 +48,7 @@ namespace UCM.IAV.Movimiento
             }
             result.lineal.y = 0;
             result.angular = 0;
+            agente.transform.rotation = Quaternion.LookRotation(result.lineal, Vector3.up);
             return result;
         }
     }
