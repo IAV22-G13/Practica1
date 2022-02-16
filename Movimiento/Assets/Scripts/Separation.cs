@@ -15,7 +15,7 @@ namespace UCM.IAV.Movimiento
         [SerializeField]
         float decayCoefficient;
 
-        private void Start()
+        /*private void Start()
         {
             Transform parent = this.transform.parent;
             int numratas = parent.GetChildCount();
@@ -24,7 +24,7 @@ namespace UCM.IAV.Movimiento
                 if (parent.GetChild(i) != this.transform)
                     ratas.Add(parent.GetChild(i));
             }
-        }
+        }*/
 
         public override Direccion GetDireccion()
         {
@@ -50,6 +50,18 @@ namespace UCM.IAV.Movimiento
             result.angular = 0;
             agente.transform.rotation = Quaternion.LookRotation(result.lineal, Vector3.up);
             return result;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.GetComponent<Wander>())
+                ratas.Add(other.transform);
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if(other.GetComponent<Wander>())
+                ratas.Remove(other.transform);
         }
     }
 }
