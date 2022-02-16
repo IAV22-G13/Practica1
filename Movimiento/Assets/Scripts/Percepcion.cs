@@ -39,6 +39,8 @@ namespace UCM.IAV.Movimiento
             direction.Normalize();
             Direccion dir = new Direccion();
             dir.lineal = direction * agente.velocidadMax;
+            dir.lineal.y = 0;
+            agente.transform.rotation = Quaternion.LookRotation(dir.lineal, Vector3.up);
             return dir;
 
         }

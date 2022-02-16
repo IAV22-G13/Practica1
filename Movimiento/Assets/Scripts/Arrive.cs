@@ -57,6 +57,8 @@ namespace UCM.IAV.Movimiento
                 result.lineal *= maxAcceleration;
             }
             result.lineal.y = 0;
+            agente.transform.rotation = Quaternion.LookRotation(result.lineal, Vector3.up);
+
             return result;
         }
     }

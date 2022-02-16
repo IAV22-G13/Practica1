@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 78873675}
   - component: {fileID: 78873674}
   - component: {fileID: 78873678}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Enemigo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2208,7 +2208,7 @@ GameObject:
   - component: {fileID: 1021455440}
   - component: {fileID: 1021455446}
   - component: {fileID: 1021455442}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Avatar
   m_TagString: Untagged
   m_Icon: {fileID: 0}

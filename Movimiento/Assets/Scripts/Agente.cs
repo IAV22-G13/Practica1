@@ -157,6 +157,9 @@ namespace UCM.IAV.Movimiento {
                 cuerpoRigido.angularVelocity = cuerpoRigido.angularVelocity.normalized * rotacionMax;
             if (cuerpoRigido.angularVelocity.magnitude < -rotacionMax)
                 cuerpoRigido.angularVelocity = cuerpoRigido.angularVelocity.normalized * -rotacionMax;
+
+            velocidad += direccion.lineal * Time.deltaTime;
+            rotacion += direccion.angular * Time.deltaTime;
         }
 
         /// <summary>
