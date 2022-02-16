@@ -287,7 +287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   peso: 1
-  prioridad: 1
+  prioridad: 2
   objetivo: {fileID: 1021455439}
   maxAcceleration: 10
   maxSpeed: 10
@@ -307,7 +307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   peso: 1
-  prioridad: 2
+  prioridad: 1
   objetivo: {fileID: 0}
 --- !u!1 &412609105
 GameObject:
@@ -592,7 +592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   peso: 1
   prioridad: 1
-  objetivo: {fileID: 0}
+  objetivo: {fileID: 1021455439}
   maxAcceleration: 10
   maxSpeed: 10
   targetRadius: 2
