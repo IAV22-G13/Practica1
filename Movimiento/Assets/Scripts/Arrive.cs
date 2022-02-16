@@ -56,9 +56,7 @@ namespace UCM.IAV.Movimiento
                 result.lineal.Normalize();
                 result.lineal *= maxAcceleration;
             }
-
-            result.angular = 0;
-
+            result.lineal.y = 0;
             return result;
         }
     }
