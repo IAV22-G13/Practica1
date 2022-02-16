@@ -7,10 +7,7 @@ namespace UCM.IAV.Movimiento
 
     public class Arrive : ComportamientoAgente
     {   
-        [SerializeField]
         float maxAcceleration;
-
-        [SerializeField]
         float maxSpeed;
 
         [SerializeField]
@@ -21,7 +18,12 @@ namespace UCM.IAV.Movimiento
 
         [SerializeField]
         float timeToTarget = 0.1f;
-
+        
+        void Start()
+        {
+            maxSpeed = agente.velocidadMax;
+            maxAcceleration = agente.aceleracionMax;
+        }
         public override Direccion GetDireccion()
         {
 
@@ -56,7 +58,6 @@ namespace UCM.IAV.Movimiento
             }
             result.lineal.y = 0;
             agente.transform.rotation = Quaternion.LookRotation(result.lineal, Vector3.up);
-
             return result;
         }
     }

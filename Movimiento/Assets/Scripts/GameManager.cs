@@ -26,5 +26,7 @@ using UnityEngine;
                 perro.GetComponent<UCM.IAV.Movimiento.Percepcion>().emptyList();
             }  
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
     }
 }

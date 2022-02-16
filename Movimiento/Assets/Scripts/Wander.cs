@@ -27,18 +27,22 @@ namespace UCM.IAV.Movimiento
     public class Wander : ComportamientoAgente
     {
         private Transform _tr;  //Transform de la rata
-
-        [SerializeField]        //Valores m�ximos de velocidad y rotacion
-        float maxSpeed, maxRotation;
+              
+        float maxSpeed, maxRotation;        //Valores m�ximos de velocidad y rotacion
 
         private float r;
         private float time, changeTime;
         [SerializeField]
-        float minCambGiro, maxCambGiro, tiempoGiro;
+        float minCambGiro, tiempoGiro;
+
+        float maxCambGiro;
 
         // Start is called before the first frame update
         void Start()
         {
+            maxSpeed = agente.velocidadMax;
+            maxRotation = agente.rotacionMax;
+            maxCambGiro = agente.rotacionMax;
             _tr = this.transform;
             changeTime = Random.Range(minCambGiro, maxCambGiro);
             r = Random.Range(-1.0f, 1.0f);
