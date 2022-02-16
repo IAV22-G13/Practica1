@@ -47,7 +47,6 @@ namespace UCM.IAV.Movimiento
                 }
             }
             result.lineal.y = 0;
-            result.angular = 0;
             return result;
         }
     }

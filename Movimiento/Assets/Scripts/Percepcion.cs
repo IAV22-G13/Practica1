@@ -44,5 +44,9 @@ namespace UCM.IAV.Movimiento
             return dir;
 
         }
+
+        public void emptyList() {
+            ratas.Clear();
+        }
     }
 }

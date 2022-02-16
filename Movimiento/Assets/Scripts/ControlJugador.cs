@@ -27,10 +27,12 @@ namespace UCM.IAV.Movimiento
         {
             if (Input.GetKeyDown("space"))
             {
+                this.GetComponent<AudioSource>().Play();
                 //suena musica
             }
             if (Input.GetKeyUp("space"))
             {
+                this.GetComponent<AudioSource>().Pause();
                 //suena musica
             }
 
