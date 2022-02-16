@@ -20,24 +20,37 @@ namespace UCM.IAV.Movimiento
         public void setSlot(int x) { slot = x; }
     }
 
-    struct slot
+    public class FormationPattern
     {
+        [SerializeField]
+        PosOri[] formation;
 
-    }
+        public bool supportsSlots(int slotCount)
+        {
+            return formation.Length > slotCount;
+        }
+        public Vector3 getSlotLocation(int slotNumber)
+        {
+            if (supportsSlots(slotNumber))
+                return formation[slotNumber].position;
+            else
+                return new Vector3();
+        }
 
-    struct pattern
-    {
-        public int supportedSlots;
+        //public PosOri getDriftOffset(int sl)
+        //{
+
+        //}
     }
 
     public class Formation
     {
 
-        static PosOri driftOffset;
+        static PosOri driftOffset = new PosOri();
 
         List<ratSlot> slotAssignments = new List<ratSlot>();
 
-        pattern exPattern;
+        FormationPattern exPattern;
         [SerializeField]
         Transform anchorPoint;
         void updateSlotAssignment()
@@ -47,12 +60,12 @@ namespace UCM.IAV.Movimiento
                 slotAssignments[i].setSlot(i);
             }
 
-            driftOffset = pattern.getDriftOffset(slotAssignments);
+            //driftOffset = exPattern.getDriftOffset(slotAssignments);
         }
 
         bool addCharacter(GameObject character)
         {
-            if (exPattern.supportedSlots < slotAssignments.Count + 1)
+            if (exPattern.supportsSlots(slotAssignments.Count + 1))
                 return false;
 
             ratSlot addSlot = new ratSlot(character, 0);
@@ -86,16 +99,18 @@ namespace UCM.IAV.Movimiento
             for(int i=0; i< slotAssignments.Count; i++)
             {
                 int slotNumber = slotAssignments[i].slot;
-                slot formSlot = pattern.getSlotLocation(slotNumber);
+                PosOri formSlot;
+                formSlot.position = exPattern.getSlotLocation(slotNumber);
+                formSlot.orientation = 0;
 
                 PosOri location;
-                location.position = ancPoint + ori * formSlot.position;
-                location.orientation = ori + formSlot.orientation;
+                location.position = ancPoint + ori.y * formSlot.position;
+                location.orientation = ori.y + formSlot.orientation;
 
                 location.position -= driftOffset.position;
                 location.orientation -= driftOffset.orientation;
 
-                slotAssignments[i].character.setTarget(location);
+                slotAssignments[i].character.GetComponent<Seguir>().SetTarget(location.position, location.orientation);
             }
         }
 
