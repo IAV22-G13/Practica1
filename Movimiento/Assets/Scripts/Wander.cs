@@ -65,6 +65,8 @@ namespace UCM.IAV.Movimiento
                 float rot = Random.Range(0.0f, maxRotation);
                 dir.angular = rot * r;
             }
+            dir.lineal.y = 0;
+            agente.transform.rotation = Quaternion.LookRotation(dir.lineal, Vector3.up);
 
             return dir;
         }

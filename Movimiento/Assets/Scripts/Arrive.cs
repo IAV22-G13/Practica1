@@ -31,14 +31,12 @@ namespace UCM.IAV.Movimiento
             float distance = direction.magnitude;
 
             if (distance < targetRadius)
-                return new Direccion();
+                return new Direccion();            
 
             float targetSpeed;
 
-            if (distance > slowRadius)
-            {
-                targetSpeed = maxSpeed;
-            }
+            if (distance > slowRadius)           
+                targetSpeed = maxSpeed;           
             else
                 targetSpeed = maxSpeed * distance / slowRadius;
 
