@@ -298,3 +298,5 @@ este toque la flauta. La aplicación del sonido lo hemos realizado con la ayuda 
 
 A parte de todo esto hemos añadido un GameManager que permite reiniciar el juego pulsando la tecla R, y eliminar todas las ratas a excepción de una, en el caso de que esto ayude
 a la observación de su comportamiento.
+
+Video Youtube: https://youtu.be/0UONxKPNtlg
