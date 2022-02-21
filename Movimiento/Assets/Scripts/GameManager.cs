@@ -20,7 +20,7 @@ using UnityEngine;
         }
         if (Input.GetKeyDown("t"))
         {
-            for (int i = 1; i < ratas.transform.GetChildCount(); i++)
+            for (int i = 1; i < ratas.transform.childCount; i++)
             {
                 Destroy(ratas.transform.GetChild(i).gameObject);
                 perro.GetComponent<UCM.IAV.Movimiento.Percepcion>().emptyList();
